@@ -1,3 +1,5 @@
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -22,5 +24,6 @@ app.get('*', (_req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`0G Agent Swarm OS server running on port ${PORT}`);
+  const groqStatus = process.env.GROQ_API_KEY ? 'Groq LLM enabled' : 'Mock mode (no GROQ_API_KEY)';
+  console.log(`0G Agent Swarm OS server running on port ${PORT} — ${groqStatus}`);
 });

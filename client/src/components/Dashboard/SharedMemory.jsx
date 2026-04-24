@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Database, FileText, MessageSquare, BarChart2, ScrollText } from 'lucide-react';
+import { Database, FileText, MessageSquare, BarChart2, ScrollText, CheckCircle2 } from 'lucide-react';
 
 const tabs = ['All', 'Messages', 'Data', 'Logs'];
 
@@ -42,9 +42,9 @@ export default function SharedMemory({ memory }) {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold text-gray-900">
-            Shared Memory <span className="text-gray-400 font-normal">(0G Storage)</span>
+            Shared Memory <span className="text-gray-400 font-normal">(0G Storage Simulation)</span>
           </h2>
-          <p className="text-sm text-gray-500 mt-0.5">All agent interactions stored on-chain</p>
+          <p className="text-sm text-gray-500 mt-0.5">All agent interactions stored via 0G Storage Simulation</p>
         </div>
         <button className="text-sm text-og-purple font-medium hover:underline">View All</button>
       </div>
@@ -79,11 +79,19 @@ export default function SharedMemory({ memory }) {
                 key={entry.id || idx}
                 className="flex items-center justify-between py-2.5 px-2 hover:bg-gray-50 rounded-lg transition-colors animate-slide-in"
               >
-                <div className="flex items-center gap-3">
-                  <Icon size={16} className={iconColor} />
-                  <span className="text-sm text-gray-700">{entry.label}</span>
+                <div className="flex items-center gap-3 min-w-0">
+                  <Icon size={16} className={`${iconColor} flex-shrink-0`} />
+                  <div className="min-w-0">
+                    <span className="text-sm text-gray-700 block">{entry.label}</span>
+                    {entry.storageStatus && (
+                      <span className="flex items-center gap-1 text-[10px] text-green-600 mt-0.5">
+                        <CheckCircle2 size={10} />
+                        {entry.storageStatus}
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 flex-shrink-0">
                   <span className="text-xs text-gray-400">{entry.size}</span>
                   <span className="text-xs text-gray-400">{formatTime(entry.timestamp)}</span>
                 </div>

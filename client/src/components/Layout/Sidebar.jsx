@@ -12,7 +12,7 @@ const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', active: true },
   { icon: ListTodo, label: 'Tasks' },
   { icon: Users, label: 'Agents' },
-  { icon: Database, label: 'Memory (0G Storage)' },
+  { icon: Database, label: 'Memory (0G Simulation)' },
   { icon: ScrollText, label: 'Logs' },
   { icon: BarChart3, label: 'Analytics' },
   { icon: Settings, label: 'Settings' },
