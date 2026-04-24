@@ -1,0 +1,15 @@
+{
+  "name": "0g-agent-swarm-os-server",
+  "version": "1.0.0",
+  "description": "Backend server for 0G Agent Swarm OS",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "uuid": "^9.0.0"
+  }
+}
