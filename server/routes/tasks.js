@@ -302,19 +302,20 @@ router.get('/', (_req, res) => {
   res.json(store.getTasks());
 });
 
-// GET /api/tasks/:id - Get task details
-router.get('/:id', (req, res) => {
-  const task = store.getTask(req.params.id);
-  if (!task) return res.status(404).json({ error: 'Task not found' });
-  res.json(task);
-});
-
 // GET /api/tasks/config/status - Check if Groq is configured
+// Must be defined before /:id to avoid Express matching "config" as a task ID
 router.get('/config/status', (_req, res) => {
   res.json({
     groqEnabled: groq.isAvailable(),
     model: groq.isAvailable() ? 'llama-3.3-70b-versatile' : 'mock',
   });
+});
+
+// GET /api/tasks/:id - Get task details
+router.get('/:id', (req, res) => {
+  const task = store.getTask(req.params.id);
+  if (!task) return res.status(404).json({ error: 'Task not found' });
+  res.json(task);
 });
 
 module.exports = router;
