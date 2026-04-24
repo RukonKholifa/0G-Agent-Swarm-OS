@@ -293,6 +293,15 @@ Without the key, the app uses mock responses — the demo is fully functional ei
 
 ## Deployment
 
+### Environment Variables Reference
+
+| Variable | Where | Required | Description |
+|----------|-------|----------|-------------|
+| `GROQ_API_KEY` | Backend (Render) | No | Groq API key for real LLM responses. Without it, mock responses are used. Get a free key at [console.groq.com/keys](https://console.groq.com/keys) |
+| `PORT` | Backend (Render) | No | Server port (defaults to `3001`). Render assigns this automatically. |
+| `NODE_ENV` | Backend (Render) | No | Set to `production` for deployed environments |
+| `VITE_API_URL` | Frontend (Vercel) | Yes (if separate deploy) | Full URL of your deployed backend (e.g., `https://your-app.onrender.com`). Not needed when running locally — Vite proxy handles it. |
+
 ### Frontend — Vercel
 
 1. Push your code to GitHub
@@ -306,7 +315,7 @@ Without the key, the app uses mock responses — the demo is fully functional ei
    - `VITE_API_URL` = your deployed backend URL (e.g., `https://your-app.onrender.com`)
 5. Deploy
 
-> **Note:** Update `client/src/api/client.js` to use `VITE_API_URL` env var for the API base URL in production, or set the proxy in `vite.config.js`.
+> The frontend reads `VITE_API_URL` at build time. When set, API requests go to `${VITE_API_URL}/api/*`. When not set (local dev), requests go to `/api/*` and Vite proxies them to `localhost:3001`.
 
 ### Backend — Render
 
@@ -318,10 +327,11 @@ Without the key, the app uses mock responses — the demo is fully functional ei
    - **Start Command:** `node index.js`
    - **Environment:** Node
 4. Add environment variables:
-   - `GROQ_API_KEY` = your Groq API key
-   - `PORT` = `3001` (or let Render assign one)
+   - `GROQ_API_KEY` = your Groq API key (see `server/.env.example` for template)
    - `NODE_ENV` = `production`
 5. Deploy
+
+> **CORS:** The backend enables CORS by default, so the Vercel frontend can call the Render backend across origins.
 
 ### Alternative: Run Everything Locally
 
@@ -344,6 +354,7 @@ cd server && npm start
 ├── .gitignore
 ├── server/
 │   ├── package.json
+│   ├── .env.example          # Server environment variable template
 │   ├── index.js              # Express server entry (loads .env)
 │   ├── services/
 │   │   └── groqClient.js     # Groq LLM API client with agent prompts
