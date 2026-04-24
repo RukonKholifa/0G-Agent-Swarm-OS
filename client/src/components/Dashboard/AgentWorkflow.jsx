@@ -11,7 +11,7 @@ const agentConfig = [
     dotColor: 'bg-purple-500',
     progressColor: 'bg-purple-500',
     description: 'Breaking down the task and creating execution plan...',
-    completedText: 'Plan created with 5 steps',
+    completedText: 'Plan created and stored in 0G Storage Simulation',
   },
   {
     key: 'researcher',
@@ -20,8 +20,8 @@ const agentConfig = [
     textColor: 'text-green-600',
     dotColor: 'bg-green-500',
     progressColor: 'bg-green-500',
-    description: 'Gathering relevant data and information...',
-    completedText: 'Data sources collected: 24',
+    description: 'Fetching planner output from 0G Storage Simulation...',
+    completedText: 'Research stored in 0G Storage Simulation',
   },
   {
     key: 'executor',
@@ -30,8 +30,8 @@ const agentConfig = [
     textColor: 'text-blue-600',
     dotColor: 'bg-blue-500',
     progressColor: 'bg-blue-500',
-    description: 'Executing the plan and generating results...',
-    completedText: 'Report generated successfully',
+    description: 'Fetching research data from 0G Storage Simulation...',
+    completedText: 'Result stored in 0G Storage Simulation',
   },
   {
     key: 'critic',
@@ -40,8 +40,8 @@ const agentConfig = [
     textColor: 'text-orange-600',
     dotColor: 'bg-orange-500',
     progressColor: 'bg-orange-500',
-    description: 'Reviewing output for accuracy and quality...',
-    completedText: 'Review Score: 92/100',
+    description: 'Reviewing output fetched from 0G Storage Simulation...',
+    completedText: 'Feedback stored in 0G Storage Simulation',
   },
 ];
 
@@ -63,6 +63,14 @@ function getProgress(agentData) {
   return map[agentData.status] || 0;
 }
 
+function getCompletedText(config, agentData) {
+  if (!agentData?.result) return config.completedText;
+  if (config.key === 'critic' && agentData.result.score) {
+    return `Review Score: ${agentData.result.score}/100 — Feedback stored in 0G Storage Simulation`;
+  }
+  return config.completedText;
+}
+
 export default function AgentWorkflow({ agents }) {
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
@@ -77,6 +85,7 @@ export default function AgentWorkflow({ agents }) {
           const isActive = !!agentData;
           const isCompleted = agentData?.status === 'Completed';
           const progress = getProgress(agentData);
+          const completedMsg = getCompletedText(config, agentData);
 
           return (
             <div key={config.key} className="relative">
@@ -112,22 +121,16 @@ export default function AgentWorkflow({ agents }) {
                   {isActive && (
                     <div className="mt-1.5">
                       <p className="text-xs text-gray-500">
-                        {isCompleted ? config.completedText : config.description}
+                        {isCompleted ? completedMsg : config.description}
                       </p>
                       {isCompleted ? (
                         <div className="flex items-center gap-1 mt-1.5 text-green-600">
                           <CheckCircle size={14} />
-                          <span className="text-xs font-medium">{config.completedText}</span>
+                          <span className="text-xs font-medium">Agent memory persisted successfully</span>
                         </div>
                       ) : (
                         <div className="mt-2 flex items-center gap-2">
-                          {config.key === 'researcher' ? (
-                            <span className="text-xs text-gray-500">Data sources collected: 24</span>
-                          ) : config.key === 'critic' ? (
-                            <span className="text-xs text-gray-500">Review Score: 92/100</span>
-                          ) : (
-                            <span className="text-xs text-gray-500">Progress</span>
-                          )}
+                          <span className="text-xs text-gray-500">Progress</span>
                           <div className="flex-1">
                             <ProgressBar progress={progress} color={config.progressColor} />
                           </div>

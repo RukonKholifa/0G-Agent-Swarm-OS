@@ -10,6 +10,7 @@ function formatTime(timestamp) {
 const dotColorMap = {
   agent: 'bg-blue-500',
   memory: 'bg-purple-500',
+  storage: 'bg-emerald-500',
   success: 'bg-green-500',
   info: 'bg-gray-400',
 };
@@ -29,6 +30,7 @@ export default function LiveLogs({ logs }) {
           logs.map((log, idx) => {
             const dotColor = dotColorMap[log.type] || 'bg-gray-400';
             const isSuccess = log.type === 'success';
+            const isStorage = log.type === 'storage';
             return (
               <div
                 key={log.id || idx}
@@ -36,7 +38,13 @@ export default function LiveLogs({ logs }) {
               >
                 <div className="flex items-center gap-2.5">
                   <span className={`w-2 h-2 rounded-full ${dotColor} flex-shrink-0`} />
-                  <span className={`text-sm ${isSuccess ? 'text-green-600 font-medium' : 'text-gray-600'}`}>
+                  <span className={`text-sm ${
+                    isSuccess
+                      ? 'text-green-600 font-medium'
+                      : isStorage
+                        ? 'text-emerald-600'
+                        : 'text-gray-600'
+                  }`}>
                     {log.message}
                   </span>
                 </div>

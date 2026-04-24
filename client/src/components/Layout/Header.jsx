@@ -1,7 +1,7 @@
 import { Menu, Bell } from 'lucide-react';
 
 const statusItems = [
-  { label: '0G Storage', status: 'Connected', color: 'bg-green-500' },
+  { label: '0G Storage', status: 'Simulated', color: 'bg-green-500' },
   { label: '0G Compute', status: 'Active', color: 'bg-green-500' },
   { label: '0G Chain', status: 'Synced', color: 'bg-green-500' },
 ];
